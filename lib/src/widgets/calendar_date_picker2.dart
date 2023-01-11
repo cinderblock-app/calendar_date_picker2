@@ -963,11 +963,6 @@ class _DayPickerState extends State<_DayPicker> {
           }
         }
 
-        dayWidget = Padding(
-          padding: const EdgeInsets.symmetric(vertical: 1),
-          child: dayWidget,
-        );
-
         if (isDisabled) {
           dayWidget = ExcludeSemantics(
             child: dayWidget,
