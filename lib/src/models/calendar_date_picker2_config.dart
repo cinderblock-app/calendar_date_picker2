@@ -32,6 +32,7 @@ class CalendarDatePicker2Config {
     this.dayTextStyle,
     this.selectedDayTextStyle,
     this.selectedDayHighlightColor,
+    this.todayHighlightColor,
     this.disabledDayTextStyle,
     this.todayTextStyle,
     this.yearTextStyle,
@@ -97,6 +98,9 @@ class CalendarDatePicker2Config {
 
   /// The highlight color for selected day(s)
   final Color? selectedDayHighlightColor;
+
+  /// The highlight color for today
+  final Color? todayHighlightColor;
 
   /// Custom text style for disabled calendar day(s)
   final TextStyle? disabledDayTextStyle;

@@ -869,10 +869,10 @@ class _DayPickerState extends State<_DayPicker> {
         } else if (isToday) {
           // The current day gets a different text color and a circle stroke
           // border.
-          dayColor = widget.config.selectedDayHighlightColor ?? todayColor;
+          dayColor = widget.config.todayHighlightColor ?? todayColor;
           decoration = BoxDecoration(
             borderRadius: widget.config.dayBorderRadius,
-            border: Border.all(color: dayColor),
+            color: dayColor,
             shape: widget.config.dayBorderRadius != null ? BoxShape.rectangle : BoxShape.circle,
           );
         }
@@ -992,18 +992,13 @@ class _DayPickerState extends State<_DayPicker> {
       }
     }
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(
-        horizontal: _monthPickerHorizontalPadding,
-      ),
-      child: GridView.custom(
-        padding: EdgeInsets.zero,
-        physics: const ClampingScrollPhysics(),
-        gridDelegate: _dayPickerGridDelegate,
-        childrenDelegate: SliverChildListDelegate(
-          dayItems,
-          addRepaintBoundaries: false,
-        ),
+    return GridView.custom(
+      padding: EdgeInsets.zero,
+      physics: const ClampingScrollPhysics(),
+      gridDelegate: _dayPickerGridDelegate,
+      childrenDelegate: SliverChildListDelegate(
+        dayItems,
+        addRepaintBoundaries: false,
       ),
     );
   }
