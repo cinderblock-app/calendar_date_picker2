@@ -10,15 +10,11 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
+import 'package:jiffy/jiffy.dart';
 
 const Duration _monthScrollDuration = Duration(milliseconds: 200);
 
 const double _dayPickerRowHeight = 48.0;
-const int _maxDayPickerRowCount = 6; // A 31 day month that starts on Saturday.
-// One extra row for the day-of-week header.
-const double _maxDayPickerHeight = _dayPickerRowHeight * (_maxDayPickerRowCount + 1);
-// const double _monthPickerHorizontalPadding = 8.0;
-
 const int _yearPickerColumnCount = 3;
 const double _yearPickerPadding = 16.0;
 const double _yearPickerRowHeight = 52.0;
@@ -271,15 +267,34 @@ class _CalendarDatePicker2State extends State<CalendarDatePicker2> {
     }
   }
 
+  int _numberOfWeeksThisMonth() {
+    _currentDisplayedMonthDate;
+    //print("_currentDisplayedMonthDate _currentDisplayedMonthDate ${_currentDisplayedMonthDate}");
+    final numberOfDays = DateTime(_currentDisplayedMonthDate.year, _currentDisplayedMonthDate.month + 1, 0).day;
+    final List<int> weeks = <int>[];
+    for (int i = 1; i <= numberOfDays; i++) {
+      final int week = Jiffy(DateTime(_currentDisplayedMonthDate.year, _currentDisplayedMonthDate.month, i)).week;
+      if (!weeks.contains(week)) {
+        weeks.add(week);
+      }
+    }
+
+    return weeks.length;
+  }
+
   @override
   Widget build(BuildContext context) {
     assert(debugCheckHasMaterial(context));
     assert(debugCheckHasMaterialLocalizations(context));
     assert(debugCheckHasDirectionality(context));
+
+    final maxDayPickerRowCount = _numberOfWeeksThisMonth();
+    // NOTE: 22 is the header (title) height
+    final height = _dayPickerRowHeight * (maxDayPickerRowCount) + 22;
     return Stack(
       children: <Widget>[
         SizedBox(
-          height: (widget.config.controlsHeight ?? _subHeaderHeight) + _maxDayPickerHeight,
+          height: (widget.config.controlsHeight ?? _subHeaderHeight) + height,
           child: _buildPicker(),
         ),
         // Put the mode toggle button on top so that it won't be covered up by the _MonthPicker
@@ -508,25 +523,25 @@ class _MonthPickerState extends State<_MonthPicker> {
     return null;
   }
 
-  /// Navigate to the next month.
-  void _handleNextMonth() {
-    if (!_isDisplayingLastMonth) {
-      _pageController.nextPage(
-        duration: _monthScrollDuration,
-        curve: Curves.ease,
-      );
-    }
-  }
-
-  /// Navigate to the previous month.
-  void _handlePreviousMonth() {
-    if (!_isDisplayingFirstMonth) {
-      _pageController.previousPage(
-        duration: _monthScrollDuration,
-        curve: Curves.ease,
-      );
-    }
-  }
+  // /// Navigate to the next month.
+  // void _handleNextMonth() {
+  //   if (!_isDisplayingLastMonth) {
+  //     _pageController.nextPage(
+  //       duration: _monthScrollDuration,
+  //       curve: Curves.ease,
+  //     );
+  //   }
+  // }
+  //
+  // /// Navigate to the previous month.
+  // void _handlePreviousMonth() {
+  //   if (!_isDisplayingFirstMonth) {
+  //     _pageController.previousPage(
+  //       duration: _monthScrollDuration,
+  //       curve: Curves.ease,
+  //     );
+  //   }
+  // }
 
   /// Navigate to the given month.
   void _showMonth(DateTime month, {bool jump = false}) {
@@ -542,19 +557,19 @@ class _MonthPickerState extends State<_MonthPicker> {
     }
   }
 
-  /// True if the earliest allowable month is displayed.
-  bool get _isDisplayingFirstMonth {
-    return !_currentMonth.isAfter(
-      DateTime(widget.config.firstDate.year, widget.config.firstDate.month),
-    );
-  }
+  // /// True if the earliest allowable month is displayed.
+  // bool get _isDisplayingFirstMonth {
+  //   return !_currentMonth.isAfter(
+  //     DateTime(widget.config.firstDate.year, widget.config.firstDate.month),
+  //   );
+  // }
 
-  /// True if the latest allowable month is displayed.
-  bool get _isDisplayingLastMonth {
-    return !_currentMonth.isBefore(
-      DateTime(widget.config.lastDate.year, widget.config.lastDate.month),
-    );
-  }
+  // /// True if the latest allowable month is displayed.
+  // bool get _isDisplayingLastMonth {
+  //   return !_currentMonth.isBefore(
+  //     DateTime(widget.config.lastDate.year, widget.config.lastDate.month),
+  //   );
+  // }
 
   /// Handler for when the overall day grid obtains or loses focus.
   void _handleGridFocusChange(bool focused) {
@@ -659,11 +674,7 @@ class _MonthPickerState extends State<_MonthPicker> {
     return Semantics(
       child: Column(
         children: <Widget>[
-          CalendarHeader(
-            initialDate: widget.initialMonth,
-            handleNextMonth: _isDisplayingLastMonth ? null : _handleNextMonth,
-            handlePreviousMonth: _isDisplayingFirstMonth ? null : _handlePreviousMonth,
-          ),
+          CalendarHeader(currentDate: widget.initialMonth),
           Expanded(
             child: FocusableActionDetector(
               shortcuts: _shortcutMap,
@@ -992,13 +1003,26 @@ class _DayPickerState extends State<_DayPicker> {
       }
     }
 
-    return GridView.custom(
-      padding: EdgeInsets.zero,
-      physics: const ClampingScrollPhysics(),
-      gridDelegate: _dayPickerGridDelegate,
-      childrenDelegate: SliverChildListDelegate(
-        dayItems,
-        addRepaintBoundaries: false,
+    final List<int> weeks = <int>[];
+    for (int i = 1; i <= daysInMonth; i++) {
+      final int week = Jiffy(DateTime(year, month, i)).week;
+      if (!weeks.contains(week)) {
+        weeks.add(week);
+      }
+    }
+    // Note: we add +1  because of headers (name of the week days)
+    final height = _dayPickerRowHeight * (weeks.length + 1);
+
+    return SizedBox(
+      height: height,
+      child: GridView.custom(
+        padding: EdgeInsets.zero,
+        physics: const ClampingScrollPhysics(),
+        gridDelegate: _dayPickerGridDelegate,
+        childrenDelegate: SliverChildListDelegate(
+          dayItems,
+          addRepaintBoundaries: false,
+        ),
       ),
     );
   }
@@ -1037,10 +1061,7 @@ class _DayPickerGridDelegate extends SliverGridDelegate {
   SliverGridLayout getLayout(SliverConstraints constraints) {
     const int columnCount = DateTime.daysPerWeek;
     final double tileWidth = constraints.crossAxisExtent / columnCount;
-    final double tileHeight = math.min(
-      _dayPickerRowHeight,
-      constraints.viewportMainAxisExtent / (_maxDayPickerRowCount + 1),
-    );
+    const double tileHeight = _dayPickerRowHeight;
     return SliverGridRegularTileLayout(
       childCrossAxisExtent: tileWidth,
       childMainAxisExtent: tileHeight,
