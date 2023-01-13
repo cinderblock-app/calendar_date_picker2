@@ -672,28 +672,21 @@ class _MonthPickerState extends State<_MonthPicker> {
   @override
   Widget build(BuildContext context) {
     return Semantics(
-      child: Column(
-        children: <Widget>[
-          CalendarHeader(currentDate: widget.initialMonth),
-          Expanded(
-            child: FocusableActionDetector(
-              shortcuts: _shortcutMap,
-              actions: _actionMap,
-              focusNode: _dayGridFocus,
-              onFocusChange: _handleGridFocusChange,
-              child: _FocusedDate(
-                date: _dayGridFocus.hasFocus ? _focusedDay : null,
-                child: PageView.builder(
-                  key: _pageViewKey,
-                  controller: _pageController,
-                  itemBuilder: _buildItems,
-                  itemCount: DateUtils.monthDelta(widget.config.firstDate, widget.config.lastDate) + 1,
-                  onPageChanged: _handleMonthPageChanged,
-                ),
-              ),
-            ),
+      child: FocusableActionDetector(
+        shortcuts: _shortcutMap,
+        actions: _actionMap,
+        focusNode: _dayGridFocus,
+        onFocusChange: _handleGridFocusChange,
+        child: _FocusedDate(
+          date: _dayGridFocus.hasFocus ? _focusedDay : null,
+          child: PageView.builder(
+            key: _pageViewKey,
+            controller: _pageController,
+            itemBuilder: _buildItems,
+            itemCount: DateUtils.monthDelta(widget.config.firstDate, widget.config.lastDate) + 1,
+            onPageChanged: _handleMonthPageChanged,
           ),
-        ],
+        ),
       ),
     );
   }
@@ -1015,14 +1008,21 @@ class _DayPickerState extends State<_DayPicker> {
 
     return SizedBox(
       height: height,
-      child: GridView.custom(
-        padding: EdgeInsets.zero,
-        physics: const ClampingScrollPhysics(),
-        gridDelegate: _dayPickerGridDelegate,
-        childrenDelegate: SliverChildListDelegate(
-          dayItems,
-          addRepaintBoundaries: false,
-        ),
+      child: Column(
+        children: <Widget>[
+          CalendarHeader(currentDate: widget.displayedMonth),
+          Expanded(
+            child: GridView.custom(
+              padding: EdgeInsets.zero,
+              physics: const ClampingScrollPhysics(),
+              gridDelegate: _dayPickerGridDelegate,
+              childrenDelegate: SliverChildListDelegate(
+                dayItems,
+                addRepaintBoundaries: false,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
