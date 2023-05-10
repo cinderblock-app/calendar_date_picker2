@@ -43,6 +43,7 @@ class CalendarDatePicker2Config {
     this.dayTextStylePredicate,
     this.dayBuilder,
     this.disableYearPicker,
+    this.displayTodayButton = false,
   })  : calendarType = calendarType ?? CalendarDatePicker2Type.single,
         firstDate = firstDate ?? DateTime(1970),
         lastDate = lastDate ?? DateTime(DateTime.now().year + 50),
@@ -132,6 +133,9 @@ class CalendarDatePicker2Config {
   /// Flag to disable year picker and hide the toggle icon
   final bool? disableYearPicker;
 
+  /// Display today button that scrolls to the current date (and selects it)
+  final bool displayTodayButton;
+
   CalendarDatePicker2Config copyWith({
     CalendarDatePicker2Type? calendarType,
     DateTime? firstDate,
@@ -166,8 +170,7 @@ class CalendarDatePicker2Config {
       currentDate: currentDate ?? this.currentDate,
       calendarViewMode: calendarViewMode ?? this.calendarViewMode,
       weekdayLabels: weekdayLabels ?? this.weekdayLabels,
-      weekdayLabelTextStyle:
-          weekdayLabelTextStyle ?? this.weekdayLabelTextStyle,
+      weekdayLabelTextStyle: weekdayLabelTextStyle ?? this.weekdayLabelTextStyle,
       firstDayOfWeek: firstDayOfWeek ?? this.firstDayOfWeek,
       controlsHeight: controlsHeight ?? this.controlsHeight,
       lastMonthIcon: lastMonthIcon ?? this.lastMonthIcon,
@@ -175,27 +178,22 @@ class CalendarDatePicker2Config {
       controlsTextStyle: controlsTextStyle ?? this.controlsTextStyle,
       dayTextStyle: dayTextStyle ?? this.dayTextStyle,
       selectedDayTextStyle: selectedDayTextStyle ?? this.selectedDayTextStyle,
-      selectedDayHighlightColor:
-          selectedDayHighlightColor ?? this.selectedDayHighlightColor,
+      selectedDayHighlightColor: selectedDayHighlightColor ?? this.selectedDayHighlightColor,
       disabledDayTextStyle: disabledDayTextStyle ?? this.disabledDayTextStyle,
       todayTextStyle: todayTextStyle ?? this.todayTextStyle,
       yearTextStyle: yearTextStyle ?? this.yearTextStyle,
-      selectedYearTextStyle:
-          selectedYearTextStyle ?? this.selectedYearTextStyle,
+      selectedYearTextStyle: selectedYearTextStyle ?? this.selectedYearTextStyle,
       dayBorderRadius: dayBorderRadius ?? this.dayBorderRadius,
       yearBorderRadius: yearBorderRadius ?? this.yearBorderRadius,
-      selectableDayPredicate:
-          selectableDayPredicate ?? this.selectableDayPredicate,
-      dayTextStylePredicate:
-          dayTextStylePredicate ?? this.dayTextStylePredicate,
+      selectableDayPredicate: selectableDayPredicate ?? this.selectableDayPredicate,
+      dayTextStylePredicate: dayTextStylePredicate ?? this.dayTextStylePredicate,
       dayBuilder: dayBuilder ?? this.dayBuilder,
       disableYearPicker: disableYearPicker ?? this.disableYearPicker,
     );
   }
 }
 
-class CalendarDatePicker2WithActionButtonsConfig
-    extends CalendarDatePicker2Config {
+class CalendarDatePicker2WithActionButtonsConfig extends CalendarDatePicker2Config {
   CalendarDatePicker2WithActionButtonsConfig({
     CalendarDatePicker2Type? calendarType,
     DateTime? firstDate,
@@ -325,8 +323,7 @@ class CalendarDatePicker2WithActionButtonsConfig
       currentDate: currentDate ?? this.currentDate,
       calendarViewMode: calendarViewMode ?? this.calendarViewMode,
       weekdayLabels: weekdayLabels ?? this.weekdayLabels,
-      weekdayLabelTextStyle:
-          weekdayLabelTextStyle ?? this.weekdayLabelTextStyle,
+      weekdayLabelTextStyle: weekdayLabelTextStyle ?? this.weekdayLabelTextStyle,
       firstDayOfWeek: firstDayOfWeek ?? this.firstDayOfWeek,
       controlsHeight: controlsHeight ?? this.controlsHeight,
       lastMonthIcon: lastMonthIcon ?? this.lastMonthIcon,
@@ -334,31 +331,23 @@ class CalendarDatePicker2WithActionButtonsConfig
       controlsTextStyle: controlsTextStyle ?? this.controlsTextStyle,
       dayTextStyle: dayTextStyle ?? this.dayTextStyle,
       selectedDayTextStyle: selectedDayTextStyle ?? this.selectedDayTextStyle,
-      selectedDayHighlightColor:
-          selectedDayHighlightColor ?? this.selectedDayHighlightColor,
+      selectedDayHighlightColor: selectedDayHighlightColor ?? this.selectedDayHighlightColor,
       disabledDayTextStyle: disabledDayTextStyle ?? this.disabledDayTextStyle,
       todayTextStyle: todayTextStyle ?? this.todayTextStyle,
       yearTextStyle: yearTextStyle ?? this.yearTextStyle,
-      selectedYearTextStyle:
-          selectedYearTextStyle ?? this.selectedYearTextStyle,
-      gapBetweenCalendarAndButtons:
-          gapBetweenCalendarAndButtons ?? this.gapBetweenCalendarAndButtons,
-      cancelButtonTextStyle:
-          cancelButtonTextStyle ?? this.cancelButtonTextStyle,
+      selectedYearTextStyle: selectedYearTextStyle ?? this.selectedYearTextStyle,
+      gapBetweenCalendarAndButtons: gapBetweenCalendarAndButtons ?? this.gapBetweenCalendarAndButtons,
+      cancelButtonTextStyle: cancelButtonTextStyle ?? this.cancelButtonTextStyle,
       cancelButton: cancelButton ?? this.cancelButton,
       okButtonTextStyle: okButtonTextStyle ?? this.okButtonTextStyle,
       okButton: okButton ?? this.okButton,
       openedFromDialog: openedFromDialog ?? this.openedFromDialog,
-      closeDialogOnCancelTapped:
-          closeDialogOnCancelTapped ?? this.closeDialogOnCancelTapped,
-      closeDialogOnOkTapped:
-          closeDialogOnOkTapped ?? this.closeDialogOnOkTapped,
+      closeDialogOnCancelTapped: closeDialogOnCancelTapped ?? this.closeDialogOnCancelTapped,
+      closeDialogOnOkTapped: closeDialogOnOkTapped ?? this.closeDialogOnOkTapped,
       dayBorderRadius: dayBorderRadius ?? this.dayBorderRadius,
       yearBorderRadius: yearBorderRadius ?? this.yearBorderRadius,
-      selectableDayPredicate:
-          selectableDayPredicate ?? this.selectableDayPredicate,
-      dayTextStylePredicate:
-          dayTextStylePredicate ?? this.dayTextStylePredicate,
+      selectableDayPredicate: selectableDayPredicate ?? this.selectableDayPredicate,
+      dayTextStylePredicate: dayTextStylePredicate ?? this.dayTextStylePredicate,
       dayBuilder: dayBuilder ?? this.dayBuilder,
       disableYearPicker: disableYearPicker ?? this.disableYearPicker,
     );

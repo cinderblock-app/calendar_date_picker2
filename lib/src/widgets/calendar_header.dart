@@ -2,15 +2,41 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class CalendarHeader extends StatelessWidget {
-  const CalendarHeader({Key? key, required this.currentDate}) : super(key: key);
+  const CalendarHeader({
+    Key? key,
+    required this.currentDate,
+    required this.onTap,
+    required this.displayTodayButton,
+  }) : super(key: key);
 
   final DateTime currentDate;
+  final VoidCallback onTap;
+  final bool displayTodayButton;
 
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
+        if (displayTodayButton)
+          InkWell(
+            onTap: () {
+              onTap();
+            },
+            child: const Padding(
+              padding: EdgeInsets.all(4.0),
+              child: Text(
+                'Today',
+                style: TextStyle(
+                  fontFamily: 'Inter',
+                  fontWeight: FontWeight.w500,
+                  fontSize: 15,
+                  color: Color(0xFF0B80F3),
+                  letterSpacing: -0.2,
+                ),
+              ),
+            ),
+          ),
+        const Spacer(),
         Text(
           DateFormat('MMMM yyyy').format(currentDate),
           style: const TextStyle(
@@ -21,6 +47,22 @@ class CalendarHeader extends StatelessWidget {
             letterSpacing: -0.2,
           ),
         ),
+        const Spacer(),
+        if (displayTodayButton)
+          // This is used to make sure that current date is centered
+          const Padding(
+            padding: EdgeInsets.all(4.0),
+            child: Text(
+              'Today',
+              style: TextStyle(
+                fontFamily: 'Inter',
+                fontWeight: FontWeight.w500,
+                fontSize: 15,
+                color: Colors.transparent,
+                letterSpacing: -0.2,
+              ),
+            ),
+          ),
       ],
     );
   }

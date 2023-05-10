@@ -658,7 +658,7 @@ class _MonthPickerState extends State<_MonthPicker> {
     return widget.config.selectableDayPredicate?.call(date) ?? true;
   }
 
-  Widget _buildItems(BuildContext context, int index) {
+  Widget _buildItems(BuildContext context, int index, VoidCallback scrollToDate) {
     final DateTime month = DateUtils.addMonthsToMonthDate(widget.config.firstDate, index);
     return _DayPicker(
       key: ValueKey<DateTime>(month),
@@ -666,7 +666,28 @@ class _MonthPickerState extends State<_MonthPicker> {
       onChanged: _handleDateSelected,
       config: widget.config,
       displayedMonth: month,
+      scrollToDate: scrollToDate,
     );
+  }
+
+  void _scrollToDate(DateTime date) {
+    final currentMonthPage = DateUtils.monthDelta(widget.config.firstDate, date);
+    _pageController.animateToPage(
+      currentMonthPage,
+      duration: const Duration(milliseconds: 500),
+      curve: Curves.ease,
+    );
+    _handleDateSelected(date);
+  }
+
+  void _scrollToToday() {
+    final now = DateTime.now();
+    final today = DateTime(
+      now.year,
+      now.month,
+      now.day,
+    );
+    _scrollToDate(today);
   }
 
   @override
@@ -682,7 +703,9 @@ class _MonthPickerState extends State<_MonthPicker> {
           child: PageView.builder(
             key: _pageViewKey,
             controller: _pageController,
-            itemBuilder: _buildItems,
+            itemBuilder: (BuildContext context, int index) {
+              return _buildItems(context, index, _scrollToToday);
+            },
             itemCount: DateUtils.monthDelta(widget.config.firstDate, widget.config.lastDate) + 1,
             onPageChanged: _handleMonthPageChanged,
           ),
@@ -727,6 +750,7 @@ class _DayPicker extends StatefulWidget {
     required this.displayedMonth,
     required this.selectedDates,
     required this.onChanged,
+    required this.scrollToDate,
     Key? key,
   }) : super(key: key);
 
@@ -743,6 +767,8 @@ class _DayPicker extends StatefulWidget {
 
   /// The month whose days are displayed by this picker.
   final DateTime displayedMonth;
+
+  final VoidCallback scrollToDate;
 
   @override
   _DayPickerState createState() => _DayPickerState();
@@ -1006,11 +1032,17 @@ class _DayPickerState extends State<_DayPicker> {
     // Note: we add +1  because of headers (name of the week days)
     final height = _dayPickerRowHeight * (weeks.length + 1);
 
+    final bool displayTodayButton =
+        widget.config.displayTodayButton && DateTime.now().year == year && DateTime.now().month == month;
     return SizedBox(
       height: height,
       child: Column(
         children: <Widget>[
-          CalendarHeader(currentDate: widget.displayedMonth),
+          CalendarHeader(
+            currentDate: widget.displayedMonth,
+            onTap: widget.scrollToDate,
+            displayTodayButton: displayTodayButton,
+          ),
           Expanded(
             child: GridView.custom(
               padding: EdgeInsets.zero,
