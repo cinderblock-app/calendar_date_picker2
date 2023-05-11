@@ -18,20 +18,23 @@ class CalendarHeader extends StatelessWidget {
     return Row(
       children: <Widget>[
         if (displayTodayButton)
-          InkWell(
-            onTap: () {
-              onTap();
-            },
-            child: const Padding(
-              padding: EdgeInsets.all(4.0),
-              child: Text(
-                'Today',
-                style: TextStyle(
-                  fontFamily: 'Inter',
-                  fontWeight: FontWeight.w500,
-                  fontSize: 15,
-                  color: Color(0xFF0B80F3),
-                  letterSpacing: -0.2,
+          Padding(
+            padding: const EdgeInsetsDirectional.only(start: 16),
+            child: InkWell(
+              onTap: () {
+                onTap();
+              },
+              child: const Padding(
+                padding: EdgeInsets.all(4.0),
+                child: Text(
+                  'Today',
+                  style: TextStyle(
+                    fontFamily: 'Inter',
+                    fontWeight: FontWeight.w500,
+                    fontSize: 15,
+                    color: Color(0xFF0B80F3),
+                    letterSpacing: -0.2,
+                  ),
                 ),
               ),
             ),
@@ -51,7 +54,7 @@ class CalendarHeader extends StatelessWidget {
         if (displayTodayButton)
           // This is used to make sure that current date is centered
           const Padding(
-            padding: EdgeInsets.all(4.0),
+            padding: EdgeInsetsDirectional.only(start: 4, top: 4, bottom: 4, end: 20),
             child: Text(
               'Today',
               style: TextStyle(

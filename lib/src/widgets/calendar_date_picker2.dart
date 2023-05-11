@@ -1033,7 +1033,7 @@ class _DayPickerState extends State<_DayPicker> {
     final height = _dayPickerRowHeight * (weeks.length + 1);
 
     final bool displayTodayButton =
-        widget.config.displayTodayButton && DateTime.now().year == year && DateTime.now().month == month;
+        widget.config.displayTodayButton && (DateTime.now().year != year || DateTime.now().month != month);
     return SizedBox(
       height: height,
       child: Column(
