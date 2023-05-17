@@ -252,6 +252,7 @@ class _MyHomePageState extends State<MyHomePage> {
       selectableDayPredicate: (day) => !day
           .difference(DateTime.now().subtract(const Duration(days: 3)))
           .isNegative,
+      displayTodayButton: true,
     );
     return Column(
       mainAxisSize: MainAxisSize.min,
