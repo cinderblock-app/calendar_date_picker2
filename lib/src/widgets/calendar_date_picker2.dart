@@ -672,11 +672,7 @@ class _MonthPickerState extends State<_MonthPicker> {
 
   void _scrollToDate(DateTime date) {
     final currentMonthPage = DateUtils.monthDelta(widget.config.firstDate, date);
-    _pageController.animateToPage(
-      currentMonthPage,
-      duration: const Duration(milliseconds: 500),
-      curve: Curves.ease,
-    );
+    _pageController.jumpToPage(currentMonthPage);
     _handleDateSelected(date);
   }
 
