@@ -4,14 +4,17 @@ version: 0.3.6
 homepage: https://github.com/theideasaler/calendar_date_picker2
 
 environment:
-  sdk: ">=2.16.2 <3.0.0"
-  flutter: ">=1.17.0"
+  sdk: '>=3.0.0 <4.0.0'
+  flutter: ">=3.10.0"
 
 dependencies:
   flutter:
     sdk: flutter
-  intl: ^0.17.0
-  jiffy: ^4.1.0
+  intl: ^0.19.0
+  jiffy: ^6.3.0
+
+dependency_overrides:
+  intl: any
 
 dev_dependencies:
   flutter_test:

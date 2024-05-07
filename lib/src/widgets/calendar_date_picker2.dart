@@ -273,7 +273,7 @@ class _CalendarDatePicker2State extends State<CalendarDatePicker2> {
     final numberOfDays = DateTime(_currentDisplayedMonthDate.year, _currentDisplayedMonthDate.month + 1, 0).day;
     final List<int> weeks = <int>[];
     for (int i = 1; i <= numberOfDays; i++) {
-      final int week = Jiffy(DateTime(_currentDisplayedMonthDate.year, _currentDisplayedMonthDate.month, i)).week;
+      final int week = Jiffy.parseFromDateTime(DateTime(_currentDisplayedMonthDate.year, _currentDisplayedMonthDate.month, i)).weekOfYear;
       if (!weeks.contains(week)) {
         weeks.add(week);
       }
@@ -1020,7 +1020,7 @@ class _DayPickerState extends State<_DayPicker> {
 
     final List<int> weeks = <int>[];
     for (int i = 1; i <= daysInMonth; i++) {
-      final int week = Jiffy(DateTime(year, month, i)).week;
+      final int week = Jiffy.parseFromDateTime(DateTime(year, month, i)).weekOfYear;
       if (!weeks.contains(week)) {
         weeks.add(week);
       }
